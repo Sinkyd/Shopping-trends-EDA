@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///C:/Users/dikgals/Downloads/powerbi_report.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Style Report - Shopping Data Analysis</title>
+    <script src="./Power BI Style Report - Shopping Data Analysis_files/chart.min.js.download"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+        }
+        
+        .header .date {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px 40px;
+            background: #f8f9fa;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-left: 4px solid;
+            transition: transform 0.2s;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        
+        .metric-card.blue { border-color: #3b82f6; }
+        .metric-card.green { border-color: #10b981; }
+        .metric-card.orange { border-color: #f59e0b; }
+        .metric-card.purple { border-color: #8b5cf6; }
+        
+        .metric-label {
+            font-size: 13px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .metric-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .metric-change {
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            padding: 30px 40px;
+        }
+        
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .chart-card.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        .filter-bar {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filter-item label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .filter-item select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            min-width: 150px;
+            cursor: pointer;
+        }
+        
+        .insights-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            margin: 0 40px 40px;
+            border-radius: 10px;
+        }
+        
+        .insights-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .insight-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .insight-item h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .insight-item p {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>🛍️ Shopping Data Analytics Dashboard</h1>
+                <p class="date">Data Period: 2024 | Last Updated: October 19, 2025</p>
+            </div>
+        </div>
+        
+        <div class="filter-bar">
+            <div class="filter-item">
+                <label>Category</label>
+                <select id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Footwear">Footwear</option>
+                    <option value="Outerwear">Outerwear</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label>Season</label>
+                <select id="seasonFilter">
+                    <option value="all">All Seasons</option>
+                    <option value="Spring">Spring</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Fall">Fall</option>
+                    <option value="Winter">Winter</option>
+                </select>
+            </div>
+            <div class="filter-item">
+                <label>Location</label>
+                <select id="locationFilter">
+                    <option value="all">All Locations</option>
+                    <option value="Maine">Maine</option>
+                    <option value="Florida">Florida</option>
+                    <option value="New York">New York</option>
+                    <option value="Rhode Island">Rhode Island</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="metrics-grid">
+            <div class="metric-card blue">
+                <div class="metric-label">Total Customers</div>
+                <div class="metric-value">300</div>
+                <div class="metric-change">↑ 100% Active</div>
+            </div>
+            <div class="metric-card green">
+                <div class="metric-value">$60.15</div>
+                <div class="metric-label">Avg Purchase Amount</div>
+                <div class="metric-change">↑ Range: $20-$100</div>
+            </div>
+            <div class="metric-card orange">
+                <div class="metric-value">3.67</div>
+                <div class="metric-label">Avg Customer Rating</div>
+                <div class="metric-change">⭐ Out of 5.0</div>
+            </div>
+            <div class="metric-card purple">
+                <div class="metric-value">$18,045</div>
+                <div class="metric-label">Total Revenue</div>
+                <div class="metric-change">↑ 100% Discounted</div>
+            </div>
+        </div>
+        
+        <div class="charts-grid">
+            <div class="chart-card">
+                <div class="chart-title">Revenue by Category</div>
+                <div class="chart-container">
+                    <canvas id="categoryChart" width="758" height="450" style="display: block; box-sizing: border-box; height: 300px; width: 505.333px;"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">Top 8 Locations by Sales</div>
+                <div class="chart-container">
+                    <canvas id="locationChart" width="758" height="450" style="display: block; box-sizing: border-box; height: 300px; width: 505.333px;"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">Age Distribution</div>
+                <div class="chart-container">
+                    <canvas id="ageChart" width="758" height="450" style="display: block; box-sizing: border-box; height: 300px; width: 505.333px;"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">Payment Method Usage</div>
+                <div class="chart-container">
+                    <canvas id="paymentChart" width="758" height="450" style="display: block; box-sizing: border-box; height: 300px; width: 505.333px;"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">Seasonal Purchase Trends</div>
+                <div class="chart-container">
+                    <canvas id="seasonChart" width="758" height="450" style="display: block; box-sizing: border-box; height: 300px; width: 505.333px;"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card">
+                <div class="chart-title">Review Rating Distribution</div>
+                <div class="chart-container">
+                    <canvas id="ratingChart" width="758" height="450" style="display: block; box-sizing: border-box; height: 300px; width: 505.333px;"></canvas>
+                </div>
+            </div>
+            
+            <div class="chart-card full-width">
+                <div class="chart-title">Shipping Type Preferences</div>
+                <div class="chart-container">
+                    <canvas id="shippingChart" width="1630" height="450" style="display: block; box-sizing: border-box; height: 300px; width: 1086.67px;"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="insights-panel">
+            <div class="insights-title">📊 Key Business Insights</div>
+            <div class="insights-grid">
+                <div class="insight-item">
+                    <h4>🎯 Customer Loyalty</h4>
+                    <p>100% subscription rate indicates exceptional customer retention. All customers are engaged with loyalty programs.</p>
+                </div>
+                <div class="insight-item">
+                    <h4>💰 Pricing Strategy</h4>
+                    <p>100% discount usage shows effective promotional campaigns. Average purchase of $60 with strong conversion rates.</p>
+                </div>
+                <div class="insight-item">
+                    <h4>📍 Geographic Focus</h4>
+                    <p>Maine, Rhode Island, and Florida are top markets. Consider expanding marketing efforts in these high-performing regions.</p>
+                </div>
+                <div class="insight-item">
+                    <h4>⭐ Customer Satisfaction</h4>
+                    <p>Average rating of 3.67/5.0 suggests room for improvement. Focus on quality and customer service enhancements.</p>
+                </div>
+                <div class="insight-item">
+                    <h4>🚚 Shipping Preferences</h4>
+                    <p>2-Day Shipping and Standard are most popular. Fast delivery options drive customer satisfaction.</p>
+                </div>
+                <div class="insight-item">
+                    <h4>👥 Demographics</h4>
+                    <p>Diverse age range (18-70) with balanced distribution. Products appeal to multiple age segments effectively.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Chart.js default settings
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        Chart.defaults.color = '#6b7280';
+        
+        // Category Revenue Chart
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Accessories', 'Footwear', 'Clothing', 'Outerwear'],
+                datasets: [{
+                    data: [4650, 4450, 4520, 4425],
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+        
+        // Location Chart
+        new Chart(document.getElementById('locationChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Maine', 'Rhode Island', 'Florida', 'New York', 'Kentucky', 'Oregon', 'Massachusetts', 'Texas'],
+                datasets: [{
+                    label: 'Customers',
+                    data: [58, 52, 44, 38, 36, 32, 30, 28],
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+        
+        // Age Distribution Chart
+        new Chart(document.getElementById('ageChart'), {
+            type: 'bar',
+            data: {
+                labels: ['18-29', '30-39', '40-49', '50-59', '60-70'],
+                datasets: [{
+                    label: 'Customers',
+                    data: [58, 45, 52, 48, 65],
+                    backgroundColor: '#10b981',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+        
+        // Payment Method Chart
+        new Chart(document.getElementById('paymentChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Credit Card', 'Debit Card', 'PayPal', 'Cash', 'Venmo', 'Bank Transfer'],
+                datasets: [{
+                    data: [52, 48, 55, 50, 48, 47],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' }
+                }
+            }
+        });
+        
+        // Season Chart
+        new Chart(document.getElementById('seasonChart'), {
+            type: 'line',
+            data: {
+                labels: ['Winter', 'Spring', 'Summer', 'Fall'],
+                datasets: [{
+                    label: 'Purchases',
+                    data: [78, 75, 72, 68],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+        
+        // Rating Distribution Chart
+        new Chart(document.getElementById('ratingChart'), {
+            type: 'bar',
+            data: {
+                labels: ['2.5-3.0', '3.0-3.5', '3.5-4.0', '4.0-4.5', '4.5-5.0'],
+                datasets: [{
+                    label: 'Reviews',
+                    data: [45, 52, 48, 62, 58],
+                    backgroundColor: '#f59e0b',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+        
+        // Shipping Chart
+        new Chart(document.getElementById('shippingChart'), {
+            type: 'bar',
+            data: {
+                labels: ['2-Day Shipping', 'Standard', 'Store Pickup', 'Next Day Air', 'Express', 'Free Shipping'],
+                datasets: [{
+                    label: 'Usage Count',
+                    data: [65, 58, 52, 48, 42, 35],
+                    backgroundColor: '#06b6d4',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { beginAtZero: true }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    </script>
+
+</body></html>
